@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans classpath:/org/springframework/beans/factory/xml/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop 
+	    http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+	    http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+		http://www.springframework.org/schema/task  
+        http://www.springframework.org/schema/task/spring-task-4.2.xsd">
+
+	<mvc:annotation-driven />
+	<context:component-scan base-package="com.yuhuayuan.core.dto" />
+	<context:component-scan base-package="com.yuhuayuan.core.persistence" />
+	<context:component-scan base-package="com.yuhuayuan.api.controller" />
+	<context:component-scan base-package="com.yuhuayuan.core.component.timer" />
+	<context:component-scan base-package="com.yuhuayuan.core.service.impl.version" />
+	<context:component-scan base-package="com.yuhuayuan.core.service.impl.weixin" />
+	<context:component-scan base-package="com.yuhuayuan.core.service.impl.user" />
+	<context:component-scan base-package="com.yuhuayuan.core.service.impl.aliyun" />
+	<context:component-scan base-package="com.yuhuayuan.core.service.impl.goods" />
+	<context:component-scan base-package="com.yuhuayuan.core.service.impl.merchant" />
+
+
+
+
+	<task:annotation-driven />
+	<context:annotation-config />
+
+	<aop:aspectj-autoproxy />
+	<bean id="myInterceptor" class="com.yuhuayuan.core.aspect.MessageLog" />
+
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="25000000" />
+	</bean>
+
+	<mvc:resources mapping="/js/**" location="/js/" />
+	<mvc:resources mapping="/css/**" location="/css/" />
+	<mvc:resources mapping="/images/**" location="/images/" />
+	<mvc:resources mapping="/html/**" location="/html/" />
+
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:application.properties</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="maxActive" value="${jdbc.maxActive}" />
+		<property name="initialSize" value="${jdbc.initialSize}" />
+		<property name="maxWait" value="${jdbc.maxWait}" />
+		<property name="minIdle" value="${jdbc.minIdle}" />
+		<property name="timeBetweenEvictionRunsMillis" value="${jdbc.timeBetweenEvictionRunsMillis}" />
+		<property name="minEvictableIdleTimeMillis" value="${jdbc.minEvictableIdleTimeMillis}" />
+		<property name="validationQuery" value="${jdbc.validationQuery}" />
+		<property name="testWhileIdle" value="${jdbc.testWhileIdle}" />
+		<property name="testOnBorrow" value="${jdbc.testOnBorrow}" />
+		<property name="testOnReturn" value="${jdbc.testOnReturn}" />
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="typeAliasesPackage" value="com.yuhuayuan.core.dto.city,com.yuhuayuan.core.dto.goods,com.yuhuayuan.core.dto.log,com.yuhuayuan.core.dto.user,com.yuhuayuan.core.dto.version,com.yuhuayuan.core.dto.weixin" />
+		<property name="typeHandlersPackage" value="com.yuhuayuan.core.typehandler" />
+	</bean>
+
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.yuhuayuan.core.persistence" />
+	</bean>
+
+	<!-- spring declarative transaction management -->
+	<aop:config>
+		<aop:pointcut id="fooServiceMethods"
+			expression="execution(* com.yuhuayuan.core.service.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="fooServiceMethods" />
+	</aop:config>
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="find*" read-only="true" />
+			<tx:method name="load*" read-only="true" />
+			<tx:method name="*" rollback-for="Exception" />
+		</tx:attributes>
+	</tx:advice>
+
+
+	<!--<context:annotation-config /> 配置自动扫描包配置此配置可省略 -->
+	<!--<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" 
+		配置自动扫描包配置此配置可省略/> -->
+	<!-- 配置freeMarker的模板路径 -->
+	<bean
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="freemarker/" />
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+	<!-- freemarker视图解析器 -->
+	<bean
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="suffix" value=".ftl" />
+		<property name="contentType" value="text/html;charset=UTF-8" />
+		<!-- 此变量值为pageContext.request, 页面使用方法：rc.contextPath -->
+		<property name="requestContextAttribute" value="rc" />
+	</bean>
+
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxTotal" value="${cache.redis.pool.maxTotal}" />
+		<property name="maxIdle" value="${cache.redis.pool.maxIdle}" />
+		<property name="maxWaitMillis" value="${cache.redis.pool.maxWaitMillis}" />
+		<property name="testOnBorrow" value="${cache.redis.pool.testOnBorrow}" />
+	</bean>
+
+	<bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+		<constructor-arg index="0" ref="jedisPoolConfig" />
+		<constructor-arg index="1" value="${cache.redis.host}" />
+		<constructor-arg index="2" value="${cache.redis.port}" />
+		<constructor-arg index="3" value="${cache.redis.timeout}" />
+		<constructor-arg index="4" value="${cache.redis.password}" />
+		<constructor-arg index="5" value="${cache.redis.database}" />
+	</bean>
+
+	<!-- 多线程发送邮件， 和普通的消息分开， 主要是防止可能有阻塞， 避免引起相互影响 -->
+	<bean id="cacheService" class="com.yuhuayuan.core.service.impl.RedisCacheServiceImpl">
+		<property name="jedisPool" ref="jedisPool" />
+		<property name="defaultExpire" value="${cache.defaultExpire}" />
+	</bean>
+
+
+	<!-- ViewResolver -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+
+	<mvc:interceptors>
+		<!--获取用户信息-->
+		<mvc:interceptor>
+			<mvc:mapping path="/*.jsp"/>
+			<mvc:exclude-mapping path="/index"/>
+			<mvc:exclude-mapping path="/login"/>
+			<!--<mvc:exclude-mapping path="/merchantUser/sendVerifyCode"/>-->
+			<bean id="backendLoginInterceptor" class="com.yuhuayuan.core.component.interceptor.LoginInteceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+</beans>

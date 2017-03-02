@@ -1,0 +1,15 @@
+   $("#btn2").click(function() {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json",
+                    url: "Default2.aspx/GetWish",
+                    data: "{value1:'心想事成',value2:'万事如意',value3:'牛牛牛',value4:2009}",
+                    dataType: 'json',
+                    success: function(result) {
+                        alert(result.d);
+                    }
+                });
+            });
+            
+            
+            http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css
