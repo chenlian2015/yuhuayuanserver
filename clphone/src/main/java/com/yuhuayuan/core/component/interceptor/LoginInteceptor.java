@@ -1,9 +1,5 @@
 package com.yuhuayuan.core.component.interceptor;
 
-import com.yuhuayuan.core.dto.merchant.MerchantUser;
-import com.yuhuayuan.core.service.merchant.MerchantUserService;
-import com.yuhuayuan.tool.encrypt.Md5;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -14,8 +10,6 @@ import java.util.List;
 
 public class LoginInteceptor extends HandlerInterceptorAdapter {
 
-	@Autowired
-	private MerchantUserService userService;
 	private List<String> excludeUrlPatterns;
 	/**
 	 * This implementation always returns {@code true}.
@@ -23,32 +17,6 @@ public class LoginInteceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 		throws Exception {
-
-
-		String uid = this.getAdminUserId(request);
-		String complexCode = this.getComplexCode(request);
-		String sn = this.getUserSn(request);
-
-		if (StringUtils.isEmpty(complexCode) || StringUtils.isEmpty(sn)) {//未登录
-			response.sendRedirect("/clweb/login");
-			return false;
-		}
-		if (!sn.equals(Md5.GetMD5Code(complexCode)) || !complexCode.substring(13).equals(uid)) {
-			delLoginCookieByName(request, response, "merchantUserId");
-			delLoginCookieByName(request, response, "merchantSn");
-			delLoginCookieByName(request, response, "merchantComplexId");
-			response.sendRedirect("/clweb/login");
-			return false;
-		}
-
-		MerchantUser user = userService.selectByMerchantUserId(uid);
-		if (user == null ) { //用户不存在
-			delLoginCookieByName(request, response, "merchantUserId");
-			delLoginCookieByName(request, response, "merchantSn");
-			delLoginCookieByName(request, response, "merchantComplexId");
-			response.sendRedirect("/clweb/login");
-			return false;
-		}
 		return super.preHandle(request, response, handler);
 	}
 

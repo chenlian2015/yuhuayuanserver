@@ -21,4 +21,10 @@ public class MerchantUserServiceImpl implements MerchantUserService {
     public MerchantUser selectByMerchantUserId(String merchant_id) {
         return merchantUserMapper.selectByMerchantUserId(merchant_id);
     }
+
+    public int insert(MerchantUser record) {
+        return merchantUserMapper.insert(record);
+    }
+
+
 }

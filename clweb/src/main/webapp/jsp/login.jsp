@@ -69,7 +69,7 @@
 <div class="main-footer">
     copyright by ejiazi.com
 </div>
-<script src="<%=request.getContextPath()%>/js/jQuery-2.1.4.min.js"></script>
+<script src="<%=request.getContextPath()%>/assets/js/jQuery-2.1.4.min.js"></script>
 <script type="text/javascript">
 
     $("#login_submit").on("click", function () {
@@ -88,7 +88,7 @@
             dataType: "json",
             success: function (json) {
                 if ("200" === json["code"]) {
-                    window.location.href = "<%=request.getContextPath()%>/index";
+                    window.location.href = "<%=request.getContextPath()%>/index.do";
                 } else {
                     alert("用户名或者密码错误!");
                 }

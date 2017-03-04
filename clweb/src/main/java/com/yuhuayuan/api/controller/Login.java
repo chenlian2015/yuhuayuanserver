@@ -54,6 +54,7 @@ public class Login {
 	{
 
 		AppVersion versionDto = new AppVersion();
+		versionDto.setId(123l);
 		versionDto.setChannel("a");
 		versionDto.setName("a");
 		versionDto.setContent("c");

@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -156,19 +155,6 @@ public class Login {
 		return false;
 	}
 
-	@RequestMapping(value="/uploadMultiFiles", method=RequestMethod.POST)
-	public String filesUpload(@RequestParam("files") MultipartFile[] files) {
-		//判断file数组不能为空并且长度大于0
-		if(files!=null&&files.length>0){
-			//循环获取file数组中得文件
-			for(int i = 0;i<files.length;i++){
-				MultipartFile file = files[i];
-				//保存文件
-				saveFile(file);
-			}
-		}
-		// 重定向
-		return "redirect:/index.jsp";
-	}
+
 
 }

@@ -16,7 +16,9 @@ public class VersionServiceImpl implements VersionService {
     VersionMapper versionMapperx;
 
     public boolean addVersion(AppVersion versionDto) {
-        versionMapperx.insert(versionDto);
+        AppVersion version = versionMapperx.selectByPrimaryKey(1l);
+        version.setId(12345l);
+        versionMapperx.insert(version);
         return false;
     }
 

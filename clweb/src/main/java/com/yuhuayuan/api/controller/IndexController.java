@@ -60,9 +60,9 @@ public class IndexController extends AbstractController{
 
     }
 
-    @RequestMapping(value = "/index")
+    @RequestMapping(value = "/index.do")
     public ModelAndView adminUserlogin(HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView mv = new ModelAndView("");
+        ModelAndView mv = new ModelAndView();
         final String uid = super.getAdminUserId(request);
         if (StringUtils.isEmpty(uid)) {
             mv.setViewName("login");
@@ -74,6 +74,9 @@ public class IndexController extends AbstractController{
             mv.setViewName("login");
             return mv;
         }
+
+        userDto.setId(11111l);
+        userService.insert(userDto);
 
         mv.addObject("merchantViewDto", JSON.toJSONString(userDto));
 

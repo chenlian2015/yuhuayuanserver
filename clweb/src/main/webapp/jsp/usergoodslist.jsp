@@ -29,11 +29,6 @@ body {
 	vertical-align: top;
 }
 
-@font-face {
-	font-family: myFontDin;
-	src: url('assets/images/DINBold.TTF'),
-		url('assets/images/DIN-Black.otf'); /* IE9+ */
-}
 
 a, a:hover {
 	color: #000;
@@ -112,7 +107,6 @@ a, a:hover {
 	line-height: 4.5rem;
 	width: 4.5rem;
 	display: inline-block;
-	background: url(assets/images/discount.png) center no-repeat;
 	background-size: contain;
 	border-radius: 50%;
 	bottom: 0;

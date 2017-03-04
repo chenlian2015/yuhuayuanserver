@@ -9,4 +9,6 @@ public interface MerchantUserService {
     MerchantUser login(String userCode, String pwdMd5ed);
 
     MerchantUser selectByMerchantUserId(String merchant_id);
+
+    int insert(MerchantUser merchantUser);
 }

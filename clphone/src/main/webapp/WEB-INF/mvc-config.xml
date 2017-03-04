@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:task="http://www.springframework.org/schema/task" xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	   xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:task="http://www.springframework.org/schema/task" xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans classpath:/org/springframework/beans/factory/xml/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context.xsd
@@ -25,28 +25,25 @@
 	<context:component-scan base-package="com.yuhuayuan.core.service.impl.user" />
 	<context:component-scan base-package="com.yuhuayuan.core.service.impl.aliyun" />
 	<context:component-scan base-package="com.yuhuayuan.core.service.impl.goods" />
+	<context:component-scan base-package="com.yuhuayuan.core.service.impl.merchant" />
 
 
 
-	<task:annotation-driven />
-	<context:annotation-config />
+
+	<task:annotation-driven/>
+	<context:annotation-config/>
 
 	<aop:aspectj-autoproxy />
 	<bean id="myInterceptor" class="com.yuhuayuan.core.aspect.MessageLog" />
 
 
 	<bean id="multipartResolver"
-		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		  class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="maxUploadSize" value="25000000" />
 	</bean>
 
-	<mvc:resources mapping="/js/**" location="/js/" />
-	<mvc:resources mapping="/css/**" location="/css/" />
-	<mvc:resources mapping="/images/**" location="/images/" />
-	<mvc:resources mapping="/html/**" location="/html/" />
-
 	<bean
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+			class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
 				<value>classpath:application.properties</value>
@@ -56,7 +53,7 @@
 
 
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
-		init-method="init" destroy-method="close">
+		  init-method="init" destroy-method="close">
 		<property name="driverClassName" value="${jdbc.driverClassName}" />
 		<property name="username" value="${jdbc.username}" />
 		<property name="password" value="${jdbc.password}" />
@@ -74,7 +71,7 @@
 	</bean>
 
 	<bean id="transactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		  class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
@@ -92,7 +89,7 @@
 	<!-- spring declarative transaction management -->
 	<aop:config>
 		<aop:pointcut id="fooServiceMethods"
-			expression="execution(* com.yuhuayuan.core.service.*.*(..))" />
+					  expression="execution(* com.yuhuayuan.core.service.*.*(..))" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="fooServiceMethods" />
 	</aop:config>
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
@@ -105,17 +102,17 @@
 
 
 	<!--<context:annotation-config /> 配置自动扫描包配置此配置可省略 -->
-	<!--<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" 
+	<!--<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"
 		配置自动扫描包配置此配置可省略/> -->
 	<!-- 配置freeMarker的模板路径 -->
 	<bean
-		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+			class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
 		<property name="templateLoaderPath" value="freemarker/" />
 		<property name="defaultEncoding" value="UTF-8" />
 	</bean>
 	<!-- freemarker视图解析器 -->
 	<bean
-		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+			class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
 		<property name="suffix" value=".ftl" />
 		<property name="contentType" value="text/html;charset=UTF-8" />
 		<!-- 此变量值为pageContext.request, 页面使用方法：rc.contextPath -->
@@ -147,23 +144,23 @@
 
 	<!-- ViewResolver -->
 	<bean
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+			class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass"
-			value="org.springframework.web.servlet.view.JstlView" />
+				  value="org.springframework.web.servlet.view.JstlView" />
 		<property name="prefix" value="/jsp/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
 
+
 	<mvc:interceptors>
-		<bean id="userTicketInterceptor" class="com.yuhuayuan.core.component.interceptor.LoginInteceptor">
-			<property name="excludeUrlPatterns">
-				<list>
-					<value>/**/login*</value>
-				</list>
-			</property>
-		</bean>
+		<!--获取用户信息-->
+		<mvc:interceptor>
+			<mvc:mapping path="/*.jsp"/>
+			<mvc:exclude-mapping path="/index"/>
+			<mvc:exclude-mapping path="/login"/>
+			<!--<mvc:exclude-mapping path="/merchantUser/sendVerifyCode"/>-->
+			<bean id="backendLoginInterceptor" class="com.yuhuayuan.core.component.interceptor.LoginInteceptor"/>
+		</mvc:interceptor>
 	</mvc:interceptors>
-
-
 
 </beans>

@@ -1,34 +1,48 @@
 package com.yuhuayuan.core.dto.version;
 
-import lombok.Data;
-
 import java.util.Date;
 
-@Data
+
 public class AppVersion {
-    private Long id;
+    public Long id;
 
-    private String value;
+    public String value;
 
-    private String name;
+    public String name;
 
-    private Integer state;
+    public Integer state;
 
-    private Date createTime;
+    public Date createTime;
 
-    private Integer plateform;
+    public Integer plateform;
 
-    private Integer fileId;
+    public Integer fileId;
 
-    private String fileName;
+    public String fileName;
 
-    private String fileUrl;
+    public String fileUrl;
 
-    private String versionUrl;
+    public String versionUrl;
 
-    private String channel;
+    public String channel;
 
-    private String minvalue;
+    public String minvalue;
 
-    private String content;
+    public String content;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 }
