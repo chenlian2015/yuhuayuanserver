@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.yuhuayuan.core.persistence.VersionMapper" >
+<mapper namespace="com.yuhuayuan.core.persistence.AppVersionMapper" >
   <resultMap id="BaseResultMap" type="com.yuhuayuan.core.dto.version.AppVersion" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="value" property="value" jdbcType="VARCHAR" />
@@ -17,7 +17,7 @@
     <result column="content" property="content" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, value, name, state, create_time, plateform, file_id, file_name, file_url, version_url,
+    id, value, name, state, create_time, plateform, file_id, file_name, file_url, version_url, 
     channel, minvalue, content
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
@@ -31,12 +31,12 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.yuhuayuan.core.dto.version.AppVersion" >
-    insert into version (id, value, name,
+    insert into version (id, value, name, 
       state, create_time, plateform, 
       file_id, file_name, file_url, 
       version_url, channel, minvalue, 
       content)
-    values (#{id,jdbcType=BIGINT}, #{value,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+    values (#{id,jdbcType=BIGINT}, #{value,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{state,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{plateform,jdbcType=INTEGER}, 
       #{fileId,jdbcType=INTEGER}, #{fileName,jdbcType=VARCHAR}, #{fileUrl,jdbcType=VARCHAR}, 
       #{versionUrl,jdbcType=VARCHAR}, #{channel,jdbcType=VARCHAR}, #{minvalue,jdbcType=VARCHAR}, 

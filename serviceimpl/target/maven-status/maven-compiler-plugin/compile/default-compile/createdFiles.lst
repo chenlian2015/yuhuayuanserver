@@ -1,0 +1,8 @@
+com/yuhuayuan/core/service/impl/version/VersionServiceImpl.class
+com/yuhuayuan/core/service/impl/RedisCacheServiceImpl.class
+com/yuhuayuan/core/service/impl/aliyun/AliyunServiceImpl.class
+com/yuhuayuan/core/service/impl/weixin/WeiXinServiceImpl.class
+com/yuhuayuan/core/service/impl/merchant/MerchantUserServiceImpl.class
+com/yuhuayuan/core/service/impl/goods/GoodsServiceImpl.class
+com/yuhuayuan/core/service/impl/user/UserServiceImpl.class
+com/yuhuayuan/core/component/timer/WeiXinTimer.class
