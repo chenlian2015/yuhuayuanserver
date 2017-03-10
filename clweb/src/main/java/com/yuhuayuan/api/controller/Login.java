@@ -5,12 +5,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.yuhuayuan.common.ServerErrorCode;
 import com.yuhuayuan.core.dto.city.City;
 import com.yuhuayuan.core.dto.city.CityList;
-import com.yuhuayuan.core.dto.user.User;
+import com.yuhuayuan.core.dto.user.YuHuaYuanUser;
 import com.yuhuayuan.core.dto.version.AppVersion;
-import com.yuhuayuan.core.persistence.UserMapper;
+import com.yuhuayuan.core.persistence.YuHuaYuanUserMapper;
 import com.yuhuayuan.core.service.appversion.VersionService;
 import com.yuhuayuan.core.service.redis.RedisCacheService;
-import com.yuhuayuan.core.service.user.UserService;
+import com.yuhuayuan.core.service.user.YuHuaYuanUserService;
 import com.yuhuayuan.tool.ControllTool;
 import com.yuhuayuan.tool.returngson.GsonResult;
 import org.apache.log4j.Logger;
@@ -34,7 +34,7 @@ import java.util.List;
 public class Login {
 	
 	@Autowired
-    private UserService userServiceImpl;
+    private YuHuaYuanUserService yuHuaYuanUserServiceImpl;
 	
     @Autowired
     private  HttpServletRequest request;
@@ -42,7 +42,7 @@ public class Login {
     private static final Logger logger = Logger.getLogger(Login.class);
     
 	@Autowired
-	protected UserMapper userMapper;
+	protected YuHuaYuanUserMapper yuHuaYuanUserMapper;
 	
     @Autowired
     protected RedisCacheService cacheService;
@@ -109,7 +109,7 @@ public class Login {
 	@RequestMapping(value = "noticeWeiXin.do", method=RequestMethod.POST)
 	private @ResponseBody GsonResult login(HttpServletRequest request, HttpServletResponse response)
 	{
-		User u = null;
+		YuHuaYuanUser u = null;
 		//ControllTool.LogRequest(request, logger);
 		try
 		{
@@ -117,11 +117,11 @@ public class Login {
 		String strRequest = ControllTool.getRequestBody(request);
 		logger.error(strRequest);
 
-		
-		User usr = JSON.parseObject(strRequest, User.class);
+
+		YuHuaYuanUser usr = JSON.parseObject(strRequest, YuHuaYuanUser.class);
 		
 		boolean b = true;
-		b = userServiceImpl.insert(usr);
+		b = yuHuaYuanUserServiceImpl.insert(usr);
 		  
 		}catch(Exception e)
 		{

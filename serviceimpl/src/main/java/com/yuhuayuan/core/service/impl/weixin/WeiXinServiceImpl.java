@@ -2,12 +2,12 @@ package com.yuhuayuan.core.service.impl.weixin;
 
 import com.alibaba.fastjson.JSON;
 import com.yuhuayuan.constant.WeiXinConstant;
-import com.yuhuayuan.core.dto.user.User;
+import com.yuhuayuan.core.dto.user.YuHuaYuanUser;
 import com.yuhuayuan.core.dto.weixin.QRCodeRequest;
 import com.yuhuayuan.core.dto.weixin.UserBaseInfo;
-import com.yuhuayuan.core.persistence.UserMapper;
+import com.yuhuayuan.core.persistence.YuHuaYuanUserMapper;
 import com.yuhuayuan.core.service.redis.RedisCacheService;
-import com.yuhuayuan.core.service.user.UserService;
+import com.yuhuayuan.core.service.user.YuHuaYuanUserService;
 import com.yuhuayuan.core.service.weixin.WeiXinService;
 import com.yuhuayuan.tool.ImageGenerator;
 import com.yuhuayuan.tool.net.http.HttpUtils;
@@ -30,13 +30,13 @@ public class WeiXinServiceImpl implements WeiXinService{
 	private static final Logger logger = Logger.getLogger(WeiXinServiceImpl.class);
 
 	@Autowired
-	private UserService userServiceImpl;
+	private YuHuaYuanUserService yuHuaYuanUserServiceImpl;
 
 	@Autowired
 	protected RedisCacheService cacheService;
 
 	@Autowired
-	protected UserMapper userMapper;
+	protected YuHuaYuanUserMapper yuHuaYuanUserMapper;
 
 	// 返回宣传图片demo
 	public String DealRequest(String request) {
@@ -82,7 +82,7 @@ public class WeiXinServiceImpl implements WeiXinService{
 						eventKey = eventKey.replace("qrscene_", "");
 					}
 
-					User usr = new User();
+					YuHuaYuanUser usr = new YuHuaYuanUser();
 					usr.setOpenid(ToUserName);
 					usr.setShareFromOpenId(eventKey);
 
@@ -112,12 +112,12 @@ public class WeiXinServiceImpl implements WeiXinService{
 					usr.setSharePicWithZCode(imageUploaded);
 
 					boolean b = true;
-					b = userServiceImpl.insert(usr);
+					b = yuHuaYuanUserServiceImpl.insert(usr);
 				} catch (Exception e) {
 					logger.error("weixinMessage", e);
 				}
 			} else if ("CLICK".equals(event)) {
-				User uGet = userMapper.selectByOpenid(ToUserName);
+				YuHuaYuanUser uGet = yuHuaYuanUserMapper.selectByOpenid(ToUserName);
 				// 表示用户点击时间的id
 				String eventKey = (String) joXML.get("EventKey");
 				if ("VKEY_SHARE_SHANMEI".equals(eventKey)) {
@@ -139,20 +139,20 @@ public class WeiXinServiceImpl implements WeiXinService{
 					String CreateTime = "" + System.currentTimeMillis();
 					String template = "<xml><ToUserName><![CDATA[%1$s]]></ToUserName><FromUserName><![CDATA[%2$s]]></FromUserName><CreateTime>%3$s</CreateTime><MsgType><![CDATA[news]]></MsgType><ArticleCount>%4$s</ArticleCount><Articles>%5$s</Articles></xml>";
 
-					List<User> lstLeaves = null;
+					List<YuHuaYuanUser> lstLeaves = null;
 					try {
-						lstLeaves = userMapper.selectChildUsers(ToUserName);
+						lstLeaves = yuHuaYuanUserMapper.selectChildUsers(ToUserName);
 
 					} catch (Exception e) {
 						logger.error(e.toString());
 					}
 					
 					if (lstLeaves.size() > 0) {
-						Iterator<User> itLeaf = lstLeaves.iterator();
+						Iterator<YuHuaYuanUser> itLeaf = lstLeaves.iterator();
 						StringBuffer articlesContent = new StringBuffer();
 						while (itLeaf.hasNext()) {
 							String articleItemTemplate = "<item><Title><![CDATA[%1$s]]></Title> <Description><![CDATA[]]></Description><PicUrl><![CDATA[%2$s]]></PicUrl><Url><![CDATA[%3$s]]></Url></item>";
-							User u = itLeaf.next();
+							YuHuaYuanUser u = itLeaf.next();
 							articlesContent.append(String.format(articleItemTemplate, u.getNickName(),
 									u.getHeadImageUrl(), u.getHeadImageUrl()));
 						}

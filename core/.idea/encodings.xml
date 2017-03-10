@@ -3,5 +3,9 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/../clphone" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../clweb" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../hephaestus" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../hera" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../wx-sdk" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../zeus" charset="UTF-8" />
   </component>
 </project>

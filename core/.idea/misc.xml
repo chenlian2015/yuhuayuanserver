@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/../clphone" />
+    <file type="web" url="file://$PROJECT_DIR$/../clweb" />
+  </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
@@ -8,26 +12,15 @@
         <option value="$PROJECT_DIR$/../serviceimpl/pom.xml" />
         <option value="$PROJECT_DIR$/../clweb/pom.xml" />
         <option value="$PROJECT_DIR$/../clphone/pom.xml" />
+        <option value="$PROJECT_DIR$/../wx-sdk/pom.xml" />
+        <option value="$PROJECT_DIR$/../hephaestus/pom.xml" />
+        <option value="$PROJECT_DIR$/../zeus/pom.xml" />
+        <option value="$PROJECT_DIR$/../hera/pom.xml" />
+        <option value="$PROJECT_DIR$/../parent/pom.xml" />
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/classes" />
-  </component>
-  <component name="masterDetails">
-    <states>
-      <state key="ProjectJDKs.UI">
-        <settings>
-          <last-edited>1.8</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-    </states>
   </component>
 </project>

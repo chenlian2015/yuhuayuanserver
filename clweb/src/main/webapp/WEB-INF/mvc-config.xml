@@ -34,7 +34,7 @@
 	<context:annotation-config/>
 
 	<aop:aspectj-autoproxy />
-	<bean id="myInterceptor" class="com.yuhuayuan.core.aspect.MessageLog" />
+	<!--<bean id="myInterceptor" class="com.yuhuayuan.core.aspect.MessageLog" />-->
 
 
 	<bean id="multipartResolver"

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuhuayuan.core.persistence.UserMapper">
+  <insert id="save">
+    INSERT INTO `tb_user` (uid, mobile, nickname, avatar, status) VALUES (#{uid}, #{mobile}, #{nickname}, #{avatar},
+    #{status})
+  </insert>
+
+  <update id="updateAvatar">
+    UPDATE `tb_user` SET avatar = #{avatar} WHERE uid = #{uid}
+  </update>
+
+  <update id="updateNickname">
+    UPDATE `tb_user` SET nickname = #{nickname} WHERE uid = #{uid}
+  </update>
+
+  <update id="updateBirthday">
+    UPDATE `tb_user` SET birthday = #{birthday} WHERE uid = #{uid}
+  </update>
+
+  <update id="updateGender">
+    UPDATE `tb_user` SET gender = #{gender} WHERE uid = #{uid}
+  </update>
+  <update id="update">
+    UPDATE `tb_user` SET nickname = #{nickname}, avatar = #{avatar}, gender = #{gender} WHERE uid = #{uid}
+  </update>
+
+  <select id="selectByUid" resultType="com.yuhuayuan.core.dto.user.User">
+    SELECT * FROM `tb_user` WHERE uid = #{uid} LIMIT 1
+  </select>
+
+  <select id="selectByMobile" resultType="com.yuhuayuan.core.dto.user.User">
+    SELECT * FROM `tb_user` WHERE mobile = #{mobile} LIMIT 1
+  </select>
+
+  <select id="batchSelectByUids" resultType="com.yuhuayuan.core.dto.user.User">
+    SELECT * FROM `tb_user`
+    <where>
+      <if test="uids != null and uids.size() > 0">
+        uid IN
+        <foreach collection="uids" item="uid" separator="," open="(" close=")">
+          #{uid}
+        </foreach>
+      </if>
+    </where>
+  </select>
+
+  <select id="batchSelectByMobiles" resultType="com.yuhuayuan.core.dto.user.User">
+    SELECT * FROM `tb_user`
+    <where>
+      <if test="mobiles != null and mobiles.size() > 0">
+        mobile IN
+        <foreach collection="mobiles" item="mobile" separator="," open="(" close=")">
+          #{mobile}
+        </foreach>
+      </if>
+    </where>
+  </select>
+
+  <select id="selectByNickname" resultType="com.yuhuayuan.core.dto.user.User">
+    SELECT * FROM `tb_user` WHERE nickname = #{nickname} LIMIT 1
+  </select>
+
+  <select id="selectByParamIgnoreCommunityId" resultType="com.yuhuayuan.core.dto.user.User">
+    SELECT * FROM `tb_user`
+    <where>
+      <if test="mobile != null and mobile != ''">
+        AND mobile LIKE "%"#{mobile}"%"
+      </if>
+      <if test="startTime != null and startTime != ''">
+        AND create_time &gt;= #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        AND create_time &lt;= #{endTime}
+      </if>
+      <if test="nickname != null and nickname != ''">
+        AND nickname LIKE "%"#{nickname}"%"
+      </if>
+    </where>
+    ORDER BY uid DESC LIMIT #{offset}, #{size}
+  </select>
+
+  <select id="countByParamIgnoreCommunityId" resultType="java.lang.Long">
+    SELECT COUNT(*) FROM `tb_user`
+    <where>
+      <if test="mobile != null and mobile != ''">
+        AND mobile LIKE "%"#{mobile}"%"
+      </if>
+      <if test="startTime != null and startTime != ''">
+        AND create_time &gt;= #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        AND create_time &lt;= #{endTime}
+      </if>
+      <if test="nickname != null and nickname != ''">
+        AND nickname LIKE "%"#{nickname}"%"
+      </if>
+    </where>
+  </select>
+
+  <select id="selectByParam" resultType="com.yuhuayuan.core.dto.user.User">
+    SELECT DISTINCT u.* FROM `tb_user` u
+    LEFT JOIN `user_resident` ur ON u.uid = ur.user_id
+    LEFT JOIN `resident` r ON ur.resident_id = r.id
+    <where>
+      <if test="communityId > 0">
+        r.community_id = #{communityId}
+      </if>
+      <if test="mobile != null and mobile != ''">
+        AND u.mobile LIKE "%"#{mobile}"%"
+      </if>
+      <if test="startTime != null and startTime != ''">
+        AND u.create_time &gt;= #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        AND u.create_time &lt;= #{endTime}
+      </if>
+      <if test="nickname != null and nickname != ''">
+        AND u.nickname LIKE "%"#{nickname}"%"
+      </if>
+    </where>
+    ORDER BY u.uid DESC LIMIT #{offset}, #{size}
+  </select>
+
+  <select id="countByParam" resultType="java.lang.Long">
+    SELECT COUNT(DISTINCT u.uid) FROM `tb_user` u
+    LEFT JOIN `user_resident` ur ON u.uid = ur.user_id
+    LEFT JOIN `resident` r ON ur.resident_id = r.id
+    <where>
+      <if test="communityId > 0">
+        r.community_id = #{communityId}
+      </if>
+      <if test="mobile != null and mobile != ''">
+        AND u.mobile LIKE "%"#{mobile}"%"
+      </if>
+      <if test="startTime != null and startTime != ''">
+        AND u.create_time &gt;= #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        AND u.create_time &lt;= #{endTime}
+      </if>
+      <if test="nickname != null and nickname != ''">
+        AND u.nickname LIKE "%"#{nickname}"%"
+      </if>
+    </where>
+  </select>
+
+  <select id="countAll" resultType="java.lang.Long">
+    SELECT COUNT(*) FROM `tb_user`
+  </select>
+
+  <select id="selectPage" resultType="com.yuhuayuan.core.dto.user.User">
+    SELECT * FROM `tb_user` LIMIT #{offset}, #{size}
+  </select>
+</mapper>

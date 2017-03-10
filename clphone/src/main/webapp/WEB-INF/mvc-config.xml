@@ -23,6 +23,7 @@
 	<context:component-scan base-package="com.yuhuayuan.core.service.impl.version" />
 	<context:component-scan base-package="com.yuhuayuan.core.service.impl.weixin" />
 	<context:component-scan base-package="com.yuhuayuan.core.service.impl.user" />
+	<context:component-scan base-package="com.yuhuayuan.api.service.user" />
 	<context:component-scan base-package="com.yuhuayuan.core.service.impl.aliyun" />
 	<context:component-scan base-package="com.yuhuayuan.core.service.impl.goods" />
 	<context:component-scan base-package="com.yuhuayuan.core.service.impl.merchant" />
@@ -34,7 +35,7 @@
 	<context:annotation-config/>
 
 	<aop:aspectj-autoproxy />
-	<bean id="myInterceptor" class="com.yuhuayuan.core.aspect.MessageLog" />
+	<!--<bean id="myInterceptor" class="com.yuhuayuan.core.aspect.MessageLog" />-->
 
 
 	<bean id="multipartResolver"
@@ -85,20 +86,6 @@
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.yuhuayuan.core.persistence" />
 	</bean>
-
-	<!-- spring declarative transaction management -->
-	<aop:config>
-		<aop:pointcut id="fooServiceMethods"
-					  expression="execution(* com.yuhuayuan.core.service.*.*(..))" />
-		<aop:advisor advice-ref="txAdvice" pointcut-ref="fooServiceMethods" />
-	</aop:config>
-	<tx:advice id="txAdvice" transaction-manager="transactionManager">
-		<tx:attributes>
-			<tx:method name="find*" read-only="true" />
-			<tx:method name="load*" read-only="true" />
-			<tx:method name="*" rollback-for="Exception" />
-		</tx:attributes>
-	</tx:advice>
 
 
 	<!--<context:annotation-config /> 配置自动扫描包配置此配置可省略 -->

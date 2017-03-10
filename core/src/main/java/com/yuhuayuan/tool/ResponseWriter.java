@@ -1,14 +1,16 @@
 package com.yuhuayuan.tool;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
-
-import javax.servlet.http.HttpServletResponse;
-
 import com.alibaba.fastjson.JSON;
 import com.yuhuayuan.common.Constant;
+import com.yuhuayuan.tool.json.JsonUtils;
 import com.yuhuayuan.tool.returngson.GsonResult;
+
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.nio.charset.Charset;
 
 public class ResponseWriter {
 
@@ -46,5 +48,19 @@ public class ResponseWriter {
     public static void writeResponseHeader(HttpServletResponse response) {
         response.setContentType(Constant.JSON_CONTENT_TYPE);
         response.setCharacterEncoding(Constant.DEFAULT_CHAR_SET);
+    }
+
+    public static void writeJsonResponse(ServletResponse response, String responseJson) throws IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("utf-8");
+        PrintWriter writer = response.getWriter();
+        writer.write(responseJson);
+        writer.flush();
+        writer.close();
+    }
+
+    public static <T> void writeJsonResponse(ServletResponse response, T responseObject) throws IOException {
+        String jsonStr = JsonUtils.toJsonString(responseObject);
+        writeJsonResponse(response, jsonStr);
     }
 }

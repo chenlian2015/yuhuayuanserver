@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="clphone:war">
+    <output-path>$PROJECT_DIR$/../clphone/target</output-path>
+    <root id="archive" name="clphone.war">
+      <element id="artifact" artifact-name="clphone:war exploded" />
+    </root>
+  </artifact>
+</component>

@@ -1,11 +1,11 @@
 package com.yuhuayuan.api.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yuhuayuan.global.Constant;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.Cookie;

@@ -16,9 +16,14 @@
     <bytecodeTargetLevel>
       <module name="clphone" target="1.8" />
       <module name="clweb" target="1.8" />
-      <module name="core" target="1.5" />
-      <module name="service-api" target="1.5" />
-      <module name="serviceimpl" target="1.5" />
+      <module name="core" target="1.8" />
+      <module name="hephaestus" target="1.7" />
+      <module name="hera" target="1.7" />
+      <module name="parent" target="1.8" />
+      <module name="service-api" target="1.8" />
+      <module name="serviceimpl" target="1.8" />
+      <module name="wx-sdk" target="1.7" />
+      <module name="zeus" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>
