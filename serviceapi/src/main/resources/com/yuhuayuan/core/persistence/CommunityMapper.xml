@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuhuayuan.core.persistence.CommunityMapper" >
+  <resultMap id="BaseResultMap" type="com.yuhuayuan.core.dto.community.Community" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="property_id" property="propertyId" jdbcType="BIGINT" />
+    <result column="province_id" property="provinceId" jdbcType="BIGINT" />
+    <result column="city_id" property="cityId" jdbcType="BIGINT" />
+    <result column="district_id" property="districtId" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="lon" property="lon" jdbcType="VARCHAR" />
+    <result column="lat" property="lat" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="BIGINT" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="ring_id" property="ringId" jdbcType="INTEGER" />
+    <result column="cooperation_type" property="cooperationType" jdbcType="INTEGER" />
+    <result column="hw_id" property="hwId" jdbcType="VARCHAR" />
+    <result column="intelligence_door_factory" property="intelligenceDoorFactory" jdbcType="INTEGER" />
+    <result column="maintenance_phone" property="maintenancePhone" jdbcType="VARCHAR" />
+    <result column="maintenance_time" property="maintenanceTime" jdbcType="VARCHAR" />
+    <result column="extrinsic_community_id" property="extrinsicCommunityId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, property_id, province_id, city_id, district_id, name, address, lon, lat, operator, 
+    phone, state, create_time, ring_id, cooperation_type, hw_id, intelligence_door_factory, 
+    maintenance_phone, maintenance_time, extrinsic_community_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from community
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from community
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from community
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yuhuayuan.core.dto.community.Community" >
+    insert into community (id, property_id, province_id, 
+      city_id, district_id, name, 
+      address, lon, lat, 
+      operator, phone, state, 
+      create_time, ring_id, cooperation_type, 
+      hw_id, intelligence_door_factory, maintenance_phone, 
+      maintenance_time, extrinsic_community_id)
+    values (#{id,jdbcType=BIGINT}, #{propertyId,jdbcType=BIGINT}, #{provinceId,jdbcType=BIGINT}, 
+      #{cityId,jdbcType=BIGINT}, #{districtId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{lon,jdbcType=VARCHAR}, #{lat,jdbcType=VARCHAR}, 
+      #{operator,jdbcType=BIGINT}, #{phone,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{ringId,jdbcType=INTEGER}, #{cooperationType,jdbcType=INTEGER}, 
+      #{hwId,jdbcType=VARCHAR}, #{intelligenceDoorFactory,jdbcType=INTEGER}, #{maintenancePhone,jdbcType=VARCHAR}, 
+      #{maintenanceTime,jdbcType=VARCHAR}, #{extrinsicCommunityId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yuhuayuan.core.dto.community.Community" >
+    insert into community
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="propertyId != null" >
+        property_id,
+      </if>
+      <if test="provinceId != null" >
+        province_id,
+      </if>
+      <if test="cityId != null" >
+        city_id,
+      </if>
+      <if test="districtId != null" >
+        district_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="lon != null" >
+        lon,
+      </if>
+      <if test="lat != null" >
+        lat,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="ringId != null" >
+        ring_id,
+      </if>
+      <if test="cooperationType != null" >
+        cooperation_type,
+      </if>
+      <if test="hwId != null" >
+        hw_id,
+      </if>
+      <if test="intelligenceDoorFactory != null" >
+        intelligence_door_factory,
+      </if>
+      <if test="maintenancePhone != null" >
+        maintenance_phone,
+      </if>
+      <if test="maintenanceTime != null" >
+        maintenance_time,
+      </if>
+      <if test="extrinsicCommunityId != null" >
+        extrinsic_community_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="propertyId != null" >
+        #{propertyId,jdbcType=BIGINT},
+      </if>
+      <if test="provinceId != null" >
+        #{provinceId,jdbcType=BIGINT},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=BIGINT},
+      </if>
+      <if test="districtId != null" >
+        #{districtId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="lon != null" >
+        #{lon,jdbcType=VARCHAR},
+      </if>
+      <if test="lat != null" >
+        #{lat,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=BIGINT},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ringId != null" >
+        #{ringId,jdbcType=INTEGER},
+      </if>
+      <if test="cooperationType != null" >
+        #{cooperationType,jdbcType=INTEGER},
+      </if>
+      <if test="hwId != null" >
+        #{hwId,jdbcType=VARCHAR},
+      </if>
+      <if test="intelligenceDoorFactory != null" >
+        #{intelligenceDoorFactory,jdbcType=INTEGER},
+      </if>
+      <if test="maintenancePhone != null" >
+        #{maintenancePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="maintenanceTime != null" >
+        #{maintenanceTime,jdbcType=VARCHAR},
+      </if>
+      <if test="extrinsicCommunityId != null" >
+        #{extrinsicCommunityId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yuhuayuan.core.dto.community.Community" >
+    update community
+    <set >
+      <if test="propertyId != null" >
+        property_id = #{propertyId,jdbcType=BIGINT},
+      </if>
+      <if test="provinceId != null" >
+        province_id = #{provinceId,jdbcType=BIGINT},
+      </if>
+      <if test="cityId != null" >
+        city_id = #{cityId,jdbcType=BIGINT},
+      </if>
+      <if test="districtId != null" >
+        district_id = #{districtId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="lon != null" >
+        lon = #{lon,jdbcType=VARCHAR},
+      </if>
+      <if test="lat != null" >
+        lat = #{lat,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=BIGINT},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ringId != null" >
+        ring_id = #{ringId,jdbcType=INTEGER},
+      </if>
+      <if test="cooperationType != null" >
+        cooperation_type = #{cooperationType,jdbcType=INTEGER},
+      </if>
+      <if test="hwId != null" >
+        hw_id = #{hwId,jdbcType=VARCHAR},
+      </if>
+      <if test="intelligenceDoorFactory != null" >
+        intelligence_door_factory = #{intelligenceDoorFactory,jdbcType=INTEGER},
+      </if>
+      <if test="maintenancePhone != null" >
+        maintenance_phone = #{maintenancePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="maintenanceTime != null" >
+        maintenance_time = #{maintenanceTime,jdbcType=VARCHAR},
+      </if>
+      <if test="extrinsicCommunityId != null" >
+        extrinsic_community_id = #{extrinsicCommunityId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yuhuayuan.core.dto.community.Community" >
+    update community
+    set property_id = #{propertyId,jdbcType=BIGINT},
+      province_id = #{provinceId,jdbcType=BIGINT},
+      city_id = #{cityId,jdbcType=BIGINT},
+      district_id = #{districtId,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      lon = #{lon,jdbcType=VARCHAR},
+      lat = #{lat,jdbcType=VARCHAR},
+      operator = #{operator,jdbcType=BIGINT},
+      phone = #{phone,jdbcType=VARCHAR},
+      state = #{state,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      ring_id = #{ringId,jdbcType=INTEGER},
+      cooperation_type = #{cooperationType,jdbcType=INTEGER},
+      hw_id = #{hwId,jdbcType=VARCHAR},
+      intelligence_door_factory = #{intelligenceDoorFactory,jdbcType=INTEGER},
+      maintenance_phone = #{maintenancePhone,jdbcType=VARCHAR},
+      maintenance_time = #{maintenanceTime,jdbcType=VARCHAR},
+      extrinsic_community_id = #{extrinsicCommunityId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

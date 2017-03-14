@@ -9,27 +9,27 @@
     <result column="sharePicWithZCode" property="sharePicWithZCode" jdbcType="VARCHAR" />
     <result column="shareFromOpenId" property="shareFromOpenId" jdbcType="VARCHAR" />
   </resultMap>
- 
+
   <sql id="Base_Column_List" >
     id, openid, nickName, headImageUrl, sharePicWithZCode,shareFromOpenId
   </sql>
-  
+
    <select id="selectByOpenid" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from user
     where openid = #{openid,jdbcType=VARCHAR}
   </select>
-  
+
   <select id="selectChildUsers" resultType="User" parameterType="java.lang.String">
    select * from user where user.shareFromOpenId =  #{openid,jdbcType=VARCHAR}
   </select>
-  
+
   <insert id="insert" parameterType="com.yuhuayuan.core.dto.user.User" >
-    insert into user (openid, 
+    insert into user (openid,
       nickName, headImageUrl, sharePicWithZCode,shareFromOpenId
       )
-    values ( #{openid,jdbcType=VARCHAR}, 
+    values ( #{openid,jdbcType=VARCHAR},
       #{nickName,jdbcType=VARCHAR}, #{headImageUrl,jdbcType=VARCHAR}, #{sharePicWithZCode,jdbcType=VARCHAR}, #{shareFromOpenId,jdbcType=VARCHAR}
       )
   </insert>

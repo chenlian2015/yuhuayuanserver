@@ -1,0 +1,15 @@
+<!--
+    In the configuration file,
+    plugins location must meet the requirements as the following order:
+    properties?, settings?,
+    typeAliases?, typeHandlers?,
+    objectFactory?,objectWrapperFactory?,
+    plugins?,
+    environments?, databaseIdProvider?, mappers?
+-->
+<plugins>
+    <plugin interceptor="com.github.pagehelper.PageInterceptor">
+        <!-- config params as the following -->
+        <property name="param1" value="value1"/>
+    </plugin>
+</plugins>

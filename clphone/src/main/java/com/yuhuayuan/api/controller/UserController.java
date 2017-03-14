@@ -55,7 +55,13 @@ public class UserController extends AbstractController{
 
 		//参数校验
 		if (StringUtils.isBlank(mobile) || !CommonChecker.phoneValid(mobile)) {
-			return ImmutableMap.of("code", 0, "msg", ServerErrorCode.EC_401001.getMessage());
+			try {
+				Map<String, Object> data = ImmutableMap.of("code", 0, "msg", ServerErrorCode.EC_401001.getMessage());
+				return data;
+			}catch (Exception e)
+			{
+				log.debug(e.toString());
+			}
 //            return CommonResponse.simpleResponse(ErrorCode.FAILED.getCode(), ErrorCode.EC_401001.getMessage());
 		}
 		if (!NumberUtils.isDigits(verifyCode)) {

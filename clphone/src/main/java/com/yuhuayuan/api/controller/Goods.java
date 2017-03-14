@@ -1,6 +1,9 @@
 package com.yuhuayuan.api.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.yuhuayuan.core.dto.search.CommunitySearchResponse;
 import com.yuhuayuan.core.service.impl.goods.GoodsServiceImpl;
+import com.yuhuayuan.core.service.search.CommunitySearchService;
 import com.yuhuayuan.tool.ControllTool;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,37 @@ public class Goods {
 	private GoodsServiceImpl goodsService;
 	
 	private static final Logger logger = Logger.getLogger(Login.class);
+
+	@Autowired
+	private CommunitySearchService communitySearchService;
+
+	@RequestMapping(value = "testx.do")
+	public void testx(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+
+
+	}
+
+	@RequestMapping(value = "testEsRebuildAll.do")
+	public ModelAndView testEsRebuildAll(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		communitySearchService.rebuildAll();
+		ModelAndView mv = new ModelAndView();
+		return mv;
+	}
+
+	@RequestMapping(value = "testEsSearch.do")
+	public ModelAndView testEsSearch(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		final long cityId = 149;
+		final String keyword = "中";
+		final int pageNo = 1;
+		final int pageSize = 100;
+		final List<CommunitySearchResponse> pageData = communitySearchService.search(cityId, keyword, pageNo, pageSize);
+
+		System.out.println(JSON.toJSONString(pageData, true));
+
+		ModelAndView mv = new ModelAndView();
+		return mv;
+	}
+
 	// 列表
 	@RequestMapping(value = "listGoods.do")
 	public ModelAndView handleRequest(HttpServletRequest req, HttpServletResponse resp) throws Exception {

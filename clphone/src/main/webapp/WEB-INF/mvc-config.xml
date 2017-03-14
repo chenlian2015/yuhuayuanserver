@@ -27,6 +27,7 @@
 	<context:component-scan base-package="com.yuhuayuan.core.service.impl.aliyun" />
 	<context:component-scan base-package="com.yuhuayuan.core.service.impl.goods" />
 	<context:component-scan base-package="com.yuhuayuan.core.service.impl.merchant" />
+	<context:component-scan base-package="com.yuhuayuan.core.service.impl.search" />
 
 
 
@@ -80,6 +81,19 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="typeAliasesPackage" value="com.yuhuayuan.core.dto.city,com.yuhuayuan.core.dto.goods,com.yuhuayuan.core.dto.log,com.yuhuayuan.core.dto.user,com.yuhuayuan.core.dto.version,com.yuhuayuan.core.dto.weixin" />
 		<property name="typeHandlersPackage" value="com.yuhuayuan.core.typehandler" />
+
+		<property name="plugins">
+			<array>
+				<bean class="com.github.pagehelper.PageInterceptor">
+					<property name="properties">
+						<!-- config params as the following -->
+						<value>
+							param1=value1
+						</value>
+					</property>
+				</bean>
+			</array>
+		</property>
 	</bean>
 
 

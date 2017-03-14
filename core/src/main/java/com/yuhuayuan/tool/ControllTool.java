@@ -40,7 +40,7 @@ public class ControllTool {
     
     public static void LogRequest(HttpServletRequest request, Logger logger)
     {
-		Map<String, String> mapPar = request.getParameterMap();
+		Map<String, String[]> mapPar = request.getParameterMap();
 		Set<String> keyPar = mapPar.keySet();
 		Iterator<String> it = keyPar.iterator();
 		while(it.hasNext())
