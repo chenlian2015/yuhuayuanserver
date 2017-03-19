@@ -9,7 +9,6 @@ import com.yuhuayuan.core.dto.user.YuHuaYuanUser;
 import com.yuhuayuan.core.dto.version.AppVersion;
 import com.yuhuayuan.core.persistence.YuHuaYuanUserMapper;
 import com.yuhuayuan.core.service.appversion.VersionService;
-import com.yuhuayuan.core.service.redis.RedisCacheService;
 import com.yuhuayuan.core.service.user.YuHuaYuanUserService;
 import com.yuhuayuan.tool.ControllTool;
 import com.yuhuayuan.tool.returngson.GsonResult;
@@ -44,8 +43,8 @@ public class Login {
 	@Autowired
 	protected YuHuaYuanUserMapper yuHuaYuanUserMapper;
 	
-    @Autowired
-    protected RedisCacheService cacheService;
+    //@Autowired
+    //protected RedisCacheService cacheService;
 
 	@Autowired
 	VersionService versionService;

@@ -10,17 +10,8 @@
         http://www.springframework.org/schema/cache
         http://www.springframework.org/schema/cache/spring-cache.xsd">
 
+
     <cache:annotation-driven/>
-
-    <bean
-            class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations">
-            <list>
-                <value>classpath:application.properties</value>
-            </list>
-        </property>
-    </bean>
-
     <bean id="cacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
         <constructor-arg name="redisOperations" ref="redisTemplate"/>
         <property name="defaultExpiration" value="3600"/>
@@ -38,7 +29,7 @@
     <bean id="redisClusterConfiguration" class="org.springframework.data.redis.connection.RedisClusterConfiguration">
         <constructor-arg name="propertySource">
             <bean class="org.springframework.core.io.support.ResourcePropertySource">
-                <constructor-arg name="location" value="classpath:application.properties"/>
+                <constructor-arg name="location" value="classpath:redis-cluster.properties"/>
             </bean>
         </constructor-arg>
     </bean>

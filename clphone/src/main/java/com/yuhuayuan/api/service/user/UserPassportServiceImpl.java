@@ -2,15 +2,19 @@ package com.yuhuayuan.api.service.user;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
+import com.yuhuayuan.api.helper.UserCacheKey;
 import com.yuhuayuan.api.model.UserPassport;
 import com.yuhuayuan.core.BeanUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by cl on 2017/3/10.
@@ -19,8 +23,8 @@ import java.util.Optional;
 @Service
 public class UserPassportServiceImpl implements UserPassportService {
 
-    //@Autowired
-    //private RedisTemplate<String, UserPassport> redisTemplate;
+    @Autowired
+    private RedisTemplate<String, UserPassport> redisTemplate;
 
     @Override
     public UserPassport create(final long uid) {
@@ -29,13 +33,13 @@ public class UserPassportServiceImpl implements UserPassportService {
         final UserPassport userPassport = new UserPassport(uid);
 
         try {
-           // redisTemplate.opsForHash().putAll(UserCacheKey.getPassportKey(uid), BeanUtil.describe(userPassport));
+            redisTemplate.opsForHash().putAll(UserCacheKey.getPassportKey(uid), BeanUtil.describe(userPassport));
         } catch (Exception e) {
             log.error("parse userPassport to map error", e);
             log.error("userPassport -> {}", userPassport);
             Throwables.propagate(e);
         }
-        //redisTemplate.expire(UserCacheKey.getPassportKey(uid), 30, TimeUnit.DAYS);
+        redisTemplate.expire(UserCacheKey.getPassportKey(uid), 30, TimeUnit.DAYS);
 
         return userPassport;
     }

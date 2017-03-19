@@ -1,15 +1,15 @@
 package com.yuhuayuan.core.dto.user;
 
+import com.yuhuayuan.annotations.IdGenerator;
 import com.yuhuayuan.enums.EnumImageSpec;
-import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Date;
 
-@Data
 public class User {
     private Long id;
 
+    @IdGenerator(offset = 50000)
     private Long uid;
 
     private String mobile;
@@ -27,6 +27,108 @@ public class User {
     private Date createTime;
 
     private Date updateTime;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getUid() {
+        return uid;
+    }
+
+    public void setUid(Long uid) {
+        this.uid = uid;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile == null ? null : mobile.trim();
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname == null ? null : nickname.trim();
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar == null ? null : avatar.trim();
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public Byte getGender() {
+        return gender;
+    }
+
+    public void setGender(Byte gender) {
+        this.gender = gender;
+    }
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    /**
+     * 是否是默认头像
+     *
+     * @return
+     */
+    public boolean withDefaultAvatar() {
+        return StringUtils.isBlank(this.avatar) || this.avatar.startsWith("default:");
+    }
+
+    /**
+     * 判断是否是默认生成的昵称<br>
+     * 默认昵称为ejz_ 加6位随机数
+     *
+     * @return
+     */
+    public boolean withDefaultNickname() {
+        return StringUtils.isBlank(nickname)
+                || (nickname.startsWith("ejz_") && StringUtils.isNumeric(nickname.substring(4)))
+                || (StringUtils.length(mobile) == StringUtils.length(nickname) && this.mobile.startsWith(nickname.substring(0, 3)) && this.mobile.endsWith(nickname.substring(7)));
+    }
+
 
     /**
      * 获取头像地址
@@ -47,46 +149,5 @@ public class User {
         }
 
         return avatar;
-    }
-
-    /**
-     * 判断是否是默认生成的昵称<br>
-     * 默认昵称为ejz_ 加6位随机数
-     *
-     * @return
-     */
-    public boolean withDefaultNickname() {
-        return StringUtils.isBlank(nickname)
-                || (nickname.startsWith("ejz_") && StringUtils.isNumeric(nickname.substring(4)))
-                || (StringUtils.length(mobile) == StringUtils.length(nickname) && this.mobile.startsWith(nickname.substring(0, 3)) && this.mobile.endsWith(nickname.substring(7)));
-    }
-
-    /**
-     * 是否是默认头像
-     *
-     * @return
-     */
-    public boolean withDefaultAvatar() {
-        return StringUtils.isBlank(this.avatar) || this.avatar.startsWith("default:");
-    }
-
-    /**
-     * 获取编码后的手机号，中间几位会被隐去
-     *
-     * @return
-     */
-    public String getEncodeMobile() {
-        if (StringUtils.isBlank(mobile)) {
-            return mobile;
-        }
-
-        return mobile.substring(0, 3) + "****" + mobile.substring(7);
-    }
-
-    public String getNickname() {
-        if (this.mobile.equals(this.nickname)) {
-            return getEncodeMobile();
-        }
-        return this.nickname;
     }
 }

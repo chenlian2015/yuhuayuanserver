@@ -2,7 +2,6 @@ package com.yuhuayuan.core.service.impl.user;
 
 import com.yuhuayuan.core.dto.user.YuHuaYuanUser;
 import com.yuhuayuan.core.persistence.YuHuaYuanUserMapper;
-import com.yuhuayuan.core.service.redis.RedisCacheService;
 import com.yuhuayuan.core.service.user.YuHuaYuanUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +16,8 @@ public class YuHuanYuanUserServiceImpl implements YuHuaYuanUserService {
     @Autowired
     protected YuHuaYuanUserMapper yuHuaYuanUserMapper;
     
-    @Autowired
-    protected RedisCacheService cacheService;
+    //@Autowired
+    //protected RedisCacheService cacheService;
     
     public boolean insert(YuHuaYuanUser u)
     {

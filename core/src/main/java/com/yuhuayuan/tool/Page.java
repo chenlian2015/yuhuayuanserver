@@ -1,5 +1,7 @@
 package com.yuhuayuan.tool;
 
+import com.yuhuayuan.database.Pageable;
+
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Iterator;

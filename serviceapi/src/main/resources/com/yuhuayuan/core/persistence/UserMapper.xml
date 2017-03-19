@@ -1,10 +1,190 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yuhuayuan.core.persistence.UserMapper">
-  <insert id="save">
-    INSERT INTO `tb_user` (uid, mobile, nickname, avatar, status) VALUES (#{uid}, #{mobile}, #{nickname}, #{avatar},
-    #{status})
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuhuayuan.core.persistence.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.yuhuayuan.core.dto.user.User" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="uid" property="uid" jdbcType="BIGINT" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="gender" property="gender" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, uid, mobile, nickname, avatar, birthday, gender, status, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByUid" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from tb_user
+    where uid = #{uid,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByMobile" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from tb_user
+    where mobile = #{mobile,jdbcType=BIGINT}
+  </select>
+
+  <select id="batchSelectByUids" resultMap="BaseResultMap">
+    SELECT * FROM `tb_user`
+    <where>
+      <if test="uids != null and uids.size() > 0">
+        uid IN
+        <foreach collection="uids" item="uid" separator="," open="(" close=")">
+          #{uid}
+        </foreach>
+      </if>
+    </where>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" parameterType="com.yuhuayuan.core.dto.user.User" >
+    insert into tb_user (id, uid, mobile, 
+      nickname, avatar, birthday, 
+      gender, status, create_time, 
+      update_time)
+    values (#{id,jdbcType=BIGINT}, #{uid,jdbcType=BIGINT}, #{mobile,jdbcType=VARCHAR}, 
+      #{nickname,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, 
+      #{gender,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
   </insert>
+
+
+
+  <insert id="insertSelective" parameterType="com.yuhuayuan.core.dto.user.User" >
+    insert into tb_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="nickname != null" >
+        nickname,
+      </if>
+      <if test="avatar != null" >
+        avatar,
+      </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null" >
+        #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yuhuayuan.core.dto.user.User" >
+    update tb_user
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null" >
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yuhuayuan.core.dto.user.User" >
+    update tb_user
+    set uid = #{uid,jdbcType=BIGINT},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=DATE},
+      gender = #{gender,jdbcType=TINYINT},
+      status = #{status,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectByNickname" resultMap="BaseResultMap">
+    SELECT * FROM `tb_user` WHERE nickname = #{nickname} LIMIT 1
+  </select>
+
 
   <update id="updateAvatar">
     UPDATE `tb_user` SET avatar = #{avatar} WHERE uid = #{uid}
@@ -21,44 +201,13 @@
   <update id="updateGender">
     UPDATE `tb_user` SET gender = #{gender} WHERE uid = #{uid}
   </update>
-  <update id="update">
-    UPDATE `tb_user` SET nickname = #{nickname}, avatar = #{avatar}, gender = #{gender} WHERE uid = #{uid}
-  </update>
 
-  <select id="selectByUid" resultType="com.yuhuayuan.core.dto.user.User">
-    SELECT * FROM `tb_user` WHERE uid = #{uid} LIMIT 1
+  <select id="countAll" resultType="java.lang.Long">
+    SELECT COUNT(*) FROM `tb_user`
   </select>
 
-  <select id="selectByMobile" resultType="com.yuhuayuan.core.dto.user.User">
-    SELECT * FROM `tb_user` WHERE mobile = #{mobile} LIMIT 1
-  </select>
-
-  <select id="batchSelectByUids" resultType="com.yuhuayuan.core.dto.user.User">
-    SELECT * FROM `tb_user`
-    <where>
-      <if test="uids != null and uids.size() > 0">
-        uid IN
-        <foreach collection="uids" item="uid" separator="," open="(" close=")">
-          #{uid}
-        </foreach>
-      </if>
-    </where>
-  </select>
-
-  <select id="batchSelectByMobiles" resultType="com.yuhuayuan.core.dto.user.User">
-    SELECT * FROM `tb_user`
-    <where>
-      <if test="mobiles != null and mobiles.size() > 0">
-        mobile IN
-        <foreach collection="mobiles" item="mobile" separator="," open="(" close=")">
-          #{mobile}
-        </foreach>
-      </if>
-    </where>
-  </select>
-
-  <select id="selectByNickname" resultType="com.yuhuayuan.core.dto.user.User">
-    SELECT * FROM `tb_user` WHERE nickname = #{nickname} LIMIT 1
+  <select id="selectPage" resultType="com.yuhuayuan.core.dto.user.User">
+    SELECT * FROM `tb_user` LIMIT #{offset}, #{size}
   </select>
 
   <select id="selectByParamIgnoreCommunityId" resultType="com.yuhuayuan.core.dto.user.User">
@@ -78,24 +227,6 @@
       </if>
     </where>
     ORDER BY uid DESC LIMIT #{offset}, #{size}
-  </select>
-
-  <select id="countByParamIgnoreCommunityId" resultType="java.lang.Long">
-    SELECT COUNT(*) FROM `tb_user`
-    <where>
-      <if test="mobile != null and mobile != ''">
-        AND mobile LIKE "%"#{mobile}"%"
-      </if>
-      <if test="startTime != null and startTime != ''">
-        AND create_time &gt;= #{startTime}
-      </if>
-      <if test="endTime != null and endTime != ''">
-        AND create_time &lt;= #{endTime}
-      </if>
-      <if test="nickname != null and nickname != ''">
-        AND nickname LIKE "%"#{nickname}"%"
-      </if>
-    </where>
   </select>
 
   <select id="selectByParam" resultType="com.yuhuayuan.core.dto.user.User">
@@ -145,11 +276,34 @@
     </where>
   </select>
 
-  <select id="countAll" resultType="java.lang.Long">
+  <select id="countByParamIgnoreCommunityId" resultType="java.lang.Long">
     SELECT COUNT(*) FROM `tb_user`
+    <where>
+      <if test="mobile != null and mobile != ''">
+        AND mobile LIKE "%"#{mobile}"%"
+      </if>
+      <if test="startTime != null and startTime != ''">
+        AND create_time &gt;= #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        AND create_time &lt;= #{endTime}
+      </if>
+      <if test="nickname != null and nickname != ''">
+        AND nickname LIKE "%"#{nickname}"%"
+      </if>
+    </where>
   </select>
 
-  <select id="selectPage" resultType="com.yuhuayuan.core.dto.user.User">
-    SELECT * FROM `tb_user` LIMIT #{offset}, #{size}
+  <select id="batchSelectByMobiles" resultType="com.yuhuayuan.core.dto.user.User">
+    SELECT * FROM `tb_user`
+    <where>
+      <if test="mobiles != null and mobiles.size() > 0">
+        mobile IN
+        <foreach collection="mobiles" item="mobile" separator="," open="(" close=")">
+          #{mobile}
+        </foreach>
+      </if>
+    </where>
   </select>
+
 </mapper>

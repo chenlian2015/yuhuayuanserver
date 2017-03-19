@@ -6,9 +6,9 @@ import com.yuhuayuan.core.dto.user.User;
 import com.yuhuayuan.core.dto.user.UserWeixinInfo;
 import com.yuhuayuan.core.enums.EnumUserStatus;
 import com.yuhuayuan.core.persistence.UserMapper;
+import com.yuhuayuan.database.Pageable;
 import com.yuhuayuan.enums.EnumGender;
 import com.yuhuayuan.tool.Page;
-import com.yuhuayuan.tool.Pageable;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.RandomUtils;
@@ -30,8 +30,10 @@ public class UserServiceImpl implements UserService {
             "http://ejiaziimg.goodaa.com.cn/dfc44c02-b76d-11e6-80f5-76304dec7eb7.png",
             "http://ejiaziimg.goodaa.com.cn/dfc44d06-b76d-11e6-80f5-76304dec7eb7.png",
             "http://ejiaziimg.goodaa.com.cn/dfc44dd8-b76d-11e6-80f5-76304dec7eb7.png"};
+
     @Autowired
     private UserMapper userDao;
+
     //@Autowired
     //private BaseUserService baseUserService;
 
@@ -42,7 +44,7 @@ public class UserServiceImpl implements UserService {
         user.setNickname(getRandomNickName());
         user.setAvatar(getRandomAvatar());
         user.setStatus((byte)EnumUserStatus.ACTIVE.getCode());
-        userDao.save(user);
+        userDao.insert(user);
 
         if (user.getUid() <= 0) {
             throw new RuntimeException("save user error, because uid = 0");
@@ -166,11 +168,12 @@ public class UserServiceImpl implements UserService {
             user.setGender((byte)userWeixinInfo.getSex());
         }
 
-        userDao.update(user);
+        userDao.updateByPrimaryKey(user);
     }
 
     @Override
     public Page<User> getPage(final Pageable pageable) {
+
         final long total = userDao.countAll();
         final List<User> users = userDao.selectPage(pageable);
         return Page.<User>pageBuilder(pageable).total(total).content(users).build();

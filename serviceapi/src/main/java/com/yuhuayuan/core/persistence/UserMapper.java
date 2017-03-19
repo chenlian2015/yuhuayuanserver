@@ -1,46 +1,125 @@
 package com.yuhuayuan.core.persistence;
 
-
 import com.yuhuayuan.core.bean.user.SearchUserParam;
 import com.yuhuayuan.core.dto.user.User;
-import com.yuhuayuan.tool.Pageable;
+import com.yuhuayuan.database.Pageable;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
 
 public interface UserMapper {
-    int save(User var1);
+    int deleteByPrimaryKey(Long id);
 
-    User selectByUid(long var1);
+    int insert(User record);
 
-    User selectByMobile(String var1);
+    int insertSelective(User record);
 
-    List<User> batchSelectByUids(@Param("uids") List<Long> var1);
+    User selectByPrimaryKey(Long id);
 
-    List<User> batchSelectByMobiles(@Param("mobiles") List<String> var1);
+    User selectByUid(Long uid);
 
-    User selectByNickname(String var1);
+    User selectByMobile(String mobile);
 
-    int updateAvatar(@Param("uid") long var1, @Param("avatar") String var3);
+    int updateByPrimaryKeySelective(User record);
 
-    int updateNickname(@Param("uid") long var1, @Param("nickname") String var3);
+    List<User> batchSelectByUids(@Param("uids") List<Long> uids);
 
-    int updateBirthday(@Param("uid") long var1, @Param("birthday") Date var3);
+    int updateByPrimaryKey(User record);
 
-    int updateGender(@Param("uid") long var1, @Param("gender") int var3);
+    User selectByNickname(String nickName);
 
-    List<User> selectByParamIgnoreCommunityId(SearchUserParam var1);
+    /**
+     * 修改头像
+     *
+     * @param uid
+     * @param avatar
+     * @return
+     */
+    int updateAvatar(@Param("uid") long uid, @Param("avatar") String avatar);
 
-    long countByParamIgnoreCommunityId(SearchUserParam var1);
+    /**
+     * 修改昵称
+     *
+     * @param uid
+     * @param nickname
+     * @return
+     */
+    int updateNickname(@Param("uid") long uid, @Param("nickname") String nickname);
 
-    List<User> selectByParam(SearchUserParam var1);
+    /**
+     * 修改生日
+     *
+     * @param uid
+     * @param birthday
+     * @return
+     */
+    int updateBirthday(@Param("uid") long uid, @Param("birthday") Date birthday);
 
-    long countByParam(SearchUserParam var1);
+    /**
+     * 修改性别
+     *
+     * @param uid
+     * @param gender
+     * @return
+     */
+    int updateGender(final @Param("uid") long uid, final @Param("gender") int gender);
 
+
+    /**
+     * 查询所有用户数
+     *
+     * @return
+     */
     long countAll();
 
-    List<User> selectPage(Pageable var1);
+    /**
+     * 分页获取用户
+     *
+     * @param pageable
+     * @return
+     */
+    List<User> selectPage(Pageable pageable);
 
-    int update(User var1);
+
+    /**
+     * 根据搜索参数查找，忽略掉communityId
+     *
+     * @param searchUserParam
+     * @return
+     */
+    List<User> selectByParamIgnoreCommunityId(SearchUserParam searchUserParam);
+
+
+    /**
+     * 根据搜索参数查询记录数，忽略掉communityId
+     *
+     * @param searchUserParam
+     * @return
+     */
+    long countByParamIgnoreCommunityId(SearchUserParam searchUserParam);
+
+    /**
+     * 根据搜索参数查找
+     *
+     * @param searchUserParam
+     * @return
+     */
+    List<User> selectByParam(SearchUserParam searchUserParam);
+
+    /**
+     * 根据搜索参数查询记录数
+     *
+     * @param searchUserParam
+     * @return
+     */
+    long countByParam(SearchUserParam searchUserParam);
+
+
+    /**
+     * 根据手机号批量获取
+     * @param mobiles
+     * @return
+     */
+    List<User> batchSelectByMobiles(@Param("mobiles") List<String> mobiles);
 }

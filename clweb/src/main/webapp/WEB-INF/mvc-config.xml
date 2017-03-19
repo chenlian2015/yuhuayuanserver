@@ -101,23 +101,6 @@
 	</tx:advice>
 
 
-	<!--<context:annotation-config /> 配置自动扫描包配置此配置可省略 -->
-	<!--<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" 
-		配置自动扫描包配置此配置可省略/> -->
-	<!-- 配置freeMarker的模板路径 -->
-	<bean
-		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-		<property name="templateLoaderPath" value="freemarker/" />
-		<property name="defaultEncoding" value="UTF-8" />
-	</bean>
-	<!-- freemarker视图解析器 -->
-	<bean
-		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
-		<property name="suffix" value=".ftl" />
-		<property name="contentType" value="text/html;charset=UTF-8" />
-		<!-- 此变量值为pageContext.request, 页面使用方法：rc.contextPath -->
-		<property name="requestContextAttribute" value="rc" />
-	</bean>
 
 	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
 		<property name="maxTotal" value="${cache.redis.pool.maxTotal}" />

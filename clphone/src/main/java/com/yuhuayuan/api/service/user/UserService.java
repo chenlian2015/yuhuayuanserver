@@ -3,10 +3,10 @@ package com.yuhuayuan.api.service.user;
 import com.yuhuayuan.core.bean.user.SearchUserParam;
 import com.yuhuayuan.core.dto.user.User;
 import com.yuhuayuan.core.dto.user.UserWeixinInfo;
+import com.yuhuayuan.database.Pageable;
 import com.yuhuayuan.enums.EnumGender;
 import com.yuhuayuan.tool.Page;
 
-import com.yuhuayuan.tool.Pageable;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;

@@ -1,7 +1,7 @@
-package com.yuhuayuan.tool;
+package com.yuhuayuan.database;
 
 /**
- * Created by cl on 2017/3/10.
+ * Created by cl on 2017/3/16.
  */
 
 public class Pageable {
@@ -70,4 +70,3 @@ public class Pageable {
     public Pageable() {
     }
 }
-

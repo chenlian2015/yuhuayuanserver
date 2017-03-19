@@ -1,6 +1,6 @@
 package com.yuhuayuan.core.bean.user;
 
-import com.yuhuayuan.tool.Pageable;
+import com.yuhuayuan.database.Pageable;
 
 /**
  * Created by cl on 2017/3/10.

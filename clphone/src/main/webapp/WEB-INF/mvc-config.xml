@@ -3,17 +3,21 @@
 	   xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xmlns:context="http://www.springframework.org/schema/context"
 	   xmlns:task="http://www.springframework.org/schema/task" xmlns:aop="http://www.springframework.org/schema/aop"
-	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:cache="http://www.springframework.org/schema/cache"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:c="http://www.springframework.org/schema/c"
 	   xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans classpath:/org/springframework/beans/factory/xml/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/aop 
 	    http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
-	    http://www.springframework.org/schema/tx
-		http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+	    http://www.springframework.org/schema/cache
+        http://www.springframework.org/schema/cache/spring-cache.xsd
 		http://www.springframework.org/schema/task  
         http://www.springframework.org/schema/task/spring-task-4.2.xsd">
+
+	<cache:annotation-driven/>
 
 	<mvc:annotation-driven />
 	<context:component-scan base-package="com.yuhuayuan.core.dto" />
@@ -28,7 +32,7 @@
 	<context:component-scan base-package="com.yuhuayuan.core.service.impl.goods" />
 	<context:component-scan base-package="com.yuhuayuan.core.service.impl.merchant" />
 	<context:component-scan base-package="com.yuhuayuan.core.service.impl.search" />
-
+	<context:component-scan base-package="com.yuhuayuan.core.service.impl" />
 
 
 
@@ -102,47 +106,6 @@
 	</bean>
 
 
-	<!--<context:annotation-config /> 配置自动扫描包配置此配置可省略 -->
-	<!--<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"
-		配置自动扫描包配置此配置可省略/> -->
-	<!-- 配置freeMarker的模板路径 -->
-	<bean
-			class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-		<property name="templateLoaderPath" value="freemarker/" />
-		<property name="defaultEncoding" value="UTF-8" />
-	</bean>
-	<!-- freemarker视图解析器 -->
-	<bean
-			class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
-		<property name="suffix" value=".ftl" />
-		<property name="contentType" value="text/html;charset=UTF-8" />
-		<!-- 此变量值为pageContext.request, 页面使用方法：rc.contextPath -->
-		<property name="requestContextAttribute" value="rc" />
-	</bean>
-
-	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-		<property name="maxTotal" value="${cache.redis.pool.maxTotal}" />
-		<property name="maxIdle" value="${cache.redis.pool.maxIdle}" />
-		<property name="maxWaitMillis" value="${cache.redis.pool.maxWaitMillis}" />
-		<property name="testOnBorrow" value="${cache.redis.pool.testOnBorrow}" />
-	</bean>
-
-	<bean id="jedisPool" class="redis.clients.jedis.JedisPool">
-		<constructor-arg index="0" ref="jedisPoolConfig" />
-		<constructor-arg index="1" value="${cache.redis.host}" />
-		<constructor-arg index="2" value="${cache.redis.port}" />
-		<constructor-arg index="3" value="${cache.redis.timeout}" />
-		<constructor-arg index="4" value="${cache.redis.password}" />
-		<constructor-arg index="5" value="${cache.redis.database}" />
-	</bean>
-
-	<!-- 多线程发送邮件， 和普通的消息分开， 主要是防止可能有阻塞， 避免引起相互影响 -->
-	<bean id="cacheService" class="com.yuhuayuan.core.service.impl.RedisCacheServiceImpl">
-		<property name="jedisPool" ref="jedisPool" />
-		<property name="defaultExpire" value="${cache.defaultExpire}" />
-	</bean>
-
-
 	<!-- ViewResolver -->
 	<bean
 			class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -163,5 +126,31 @@
 			<bean id="backendLoginInterceptor" class="com.yuhuayuan.core.component.interceptor.LoginInteceptor"/>
 		</mvc:interceptor>
 	</mvc:interceptors>
+
+
+	<bean id="cacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
+		<constructor-arg name="redisOperations" ref="redisTemplate"/>
+		<property name="defaultExpiration" value="3600"/>
+		<property name="usePrefix" value="true"/>
+		<property name="transactionAware" value="false"/>
+	</bean>
+
+	<bean id="jedisPoolConfig"
+		  class="redis.clients.jedis.JedisPoolConfig"
+		  p:maxTotal="${spring.redis.pool.maxTotal}"
+		  p:maxIdle="${spring.redis.pool.maxIdle}"
+		  p:minIdle="${spring.redis.pool.minIdle}"/>
+
+	<bean id="jedisConnFactory"
+		  class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+		  p:password="54987663"
+		  p:hostName="127.0.0.1"
+		  p:port="6379"
+		  p:pool-config-ref="jedisPoolConfig"/>
+
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+		<property name="connectionFactory" ref="jedisConnFactory"/>
+		<property name="enableTransactionSupport" value="false"/>
+	</bean>
 
 </beans>
